@@ -1,5 +1,10 @@
 const express = require('express')
 const consola = require('consola')
+const bodyParser = require('body-parser')
+var cookieParser = require('cookie-parser')
+var morgan = require('morgan')
+var path = require('path')
+var rfs = require('rotating-file-stream')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
 
@@ -21,8 +26,22 @@ async function start() {
     await nuxt.ready()
   }
 
+  // parse application/json
+  app.use(bodyParser.json())
+
+  // parse cookies
+  app.use(cookieParser());
+  
+  // create a rotating write stream
+  let accessLogStream = rfs('access.log', {
+    interval: '1d', // rotate daily
+    path: path.join(__dirname, 'log')
+  })
+  // setup the logger
+  app.use(morgan('combined', { stream: accessLogStream }))
+
   app.get('/api', (req, res, next) => {
-    res.json({message:"Api working"})
+    res.json({ message: "Api working" })
   })
 
   // Give nuxt middleware to express
