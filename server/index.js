@@ -41,7 +41,7 @@ async function start() {
     app.use(morgan('combined', {stream: accessLogStream}))
 
     app.get('/api', (req, res, next) => {
-        res.json({message: "Api working"})
+        res.json({message: new Date()})
     })
 
     // Give nuxt middleware to express
