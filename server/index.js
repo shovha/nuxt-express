@@ -1,3 +1,5 @@
+import UserController from './src/controllers/UserController'
+
 const path = require('path')
 const express = require('express')
 const consola = require('consola')
@@ -42,12 +44,14 @@ async function start () {
   // setup the logger
   app.use(morgan('combined', { stream: accessLogStream }))
 
+  //app.get('/api', UserController.getAll)
+
   app.get('/api', async (req, res, next) => {
-    await models.User.create({
-      firstName: 'Shovha',
-      lastName: 'Saha',
-      email: 'test@test.com'
-    })
+  //   await models.User.create({
+  //     firstName: 'Shovha',
+  //     lastName: 'Saha',
+  //     email: 'test@test.com'
+  //   })
     const users = await models.User.findAll()
     res.json({ message: users })
   })
