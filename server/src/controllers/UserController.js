@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-constructor */
-import UserService from '../services/UserService'
-import models from '../models'
-import Controller from './Controller'
+const UserService = require('../services/UserService')
+const models = require('../models')
+const Controller = require('./Controller')
 
 const userService = new UserService(models.User)
 
@@ -11,4 +11,4 @@ class UserController extends Controller {
   }
 }
 
-export default new UserController(userService)
+module.exports = new UserController(userService)

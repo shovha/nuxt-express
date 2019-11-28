@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-constructor */
-import Service from './Service'
+const Service = require('./Service')
 
 class UserService extends Service {
   constructor (model) {
@@ -7,4 +7,4 @@ class UserService extends Service {
   }
 }
 
-export default UserService
+module.exports = UserService

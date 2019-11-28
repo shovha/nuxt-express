@@ -1,5 +1,3 @@
-import UserController from './src/controllers/UserController'
-
 const path = require('path')
 const express = require('express')
 const consola = require('consola')
@@ -14,7 +12,8 @@ const app = express()
 const config = require('../nuxt.config.js')
 config.dev = process.env.NODE_ENV !== 'production'
 
-const models = require('../server/src/models')
+const models = require('./src/models')
+const UserController = require('./src/controllers/UserController')
 
 async function start () {
   // Init Nuxt.js
@@ -44,17 +43,17 @@ async function start () {
   // setup the logger
   app.use(morgan('combined', { stream: accessLogStream }))
 
-  //app.get('/api', UserController.getAll)
+  app.get('/api', UserController.getAll)
 
-  app.get('/api', async (req, res, next) => {
+  // app.get('/api', async (req, res, next) => {
   //   await models.User.create({
   //     firstName: 'Shovha',
   //     lastName: 'Saha',
   //     email: 'test@test.com'
   //   })
-    const users = await models.User.findAll()
-    res.json({ message: users })
-  })
+  //   const users = await models.User.findAll()
+  //   res.json({ message: users })
+  // })
 
   // Give nuxt middleware to express
   app.use(nuxt.render)

@@ -1,3 +1,4 @@
+/* eslint-disable require-await */
 class Service {
   constructor (model) {
     this.model = model
@@ -17,15 +18,15 @@ class Service {
     delete query.limit
 
     try {
-    //   const items = await this.model
-    //     .findAll({ offset: skip, limit })
-    //   const total = await this.model.count()
+      const items = await this.model
+        .findAll({ offset: skip, limit })
+      const total = await this.model.count()
 
       return {
         error: false,
         statusCode: 200,
-        data: 0,
-        total: 0
+        data: items,
+        total
       }
     } catch (errors) {
       return {
@@ -40,11 +41,11 @@ class Service {
     try {
       const item = await this.model.create(data)
       if (item) {
- return {
-        error: false,
-        item
+        return {
+          error: false,
+          item
+        }
       }
- }
     } catch (error) {
       console.log('error', error)
       return {
@@ -68,7 +69,7 @@ class Service {
       return {
         error: true,
         statusCode: 500,
-        error
+        errors: error
       }
     }
   }
@@ -77,12 +78,12 @@ class Service {
     try {
       const item = await this.model.findByIdAndDelete(id)
       if (!item) {
- return {
-        error: true,
-        statusCode: 404,
-        message: 'item not found'
-      } 
-}
+        return {
+          error: true,
+          statusCode: 404,
+          message: 'item not found'
+        }
+      }
 
       console.log('removed item', item)
 
@@ -113,4 +114,4 @@ class Service {
   }
 }
 
-export default Service
+module.exports = Service
