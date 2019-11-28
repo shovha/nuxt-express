@@ -6,6 +6,7 @@ class Service {
     this.insert = this.insert.bind(this)
     this.update = this.update.bind(this)
     this.delete = this.delete.bind(this)
+    this.getByPk = this.getByPk.bind(this)
   }
 
   async getAll (query) {
@@ -19,20 +20,46 @@ class Service {
 
     try {
       const items = await this.model
-        .findAll({ offset: skip, limit })
-      const total = await this.model.count()
+        .findAndCountAll({ offset: skip, limit, where: query })
 
       return {
         error: false,
         statusCode: 200,
-        data: items,
-        total
+        data: items.rows,
+        total: items.count
       }
-    } catch (errors) {
+    } catch (error) {
       return {
         error: true,
         statusCode: 500,
-        errors
+        message: error.message,
+        errors: error.errors
+      }
+    }
+  }
+
+  async getByPk (id) {
+    try {
+      const item = await this.model.findByPk(id)
+
+      if (!item) {
+        return {
+          error: true,
+          statusCode: 404,
+          message: 'item not found'
+        }
+      }
+      return {
+        error: false,
+        statusCode: 200,
+        data: item
+      }
+    } catch (error) {
+      return {
+        error: true,
+        statusCode: 500,
+        message: error.message,
+        errors: error.errors
       }
     }
   }
@@ -47,11 +74,10 @@ class Service {
         }
       }
     } catch (error) {
-      console.log('error', error)
       return {
         error: true,
         statusCode: 500,
-        message: error.errmsg || 'Not able to create item',
+        message: error.message || 'Not able to create item',
         errors: error.errors
       }
     }
@@ -59,7 +85,7 @@ class Service {
 
   async update (id, data) {
     try {
-      const item = await this.model.findByIdAndUpdate(id, data, { new: true })
+      const item = await this.model.update(data, { where: { id } })
       return {
         error: false,
         statusCode: 202,
@@ -69,14 +95,15 @@ class Service {
       return {
         error: true,
         statusCode: 500,
-        errors: error
+        message: error.message,
+        errors: error.errors
       }
     }
   }
 
   async delete (id) {
     try {
-      const item = await this.model.findByIdAndDelete(id)
+      const item = await this.model.findByPk(id)
       if (!item) {
         return {
           error: true,
@@ -85,7 +112,10 @@ class Service {
         }
       }
 
-      console.log('removed item', item)
+      const isItemRemoved = await this.model.destroy({ where: { id } })
+      if (!isItemRemoved) {
+        throw new Error("Item can't be removed")
+      }
 
       if (item.path) {
         console.log('unlink item', item.path)
@@ -108,7 +138,8 @@ class Service {
       return {
         error: true,
         statusCode: 500,
-        error
+        message: error.message,
+        errors: error.errors
       }
     }
   }

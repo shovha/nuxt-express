@@ -6,7 +6,7 @@ class User extends Sequelize.Model {
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
       email: DataTypes.STRING
-    }, { sequelize })
+    }, { sequelize, tableName: 'users' })
   }
 }
 

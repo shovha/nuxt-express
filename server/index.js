@@ -44,16 +44,10 @@ async function start () {
   app.use(morgan('combined', { stream: accessLogStream }))
 
   app.get('/api', UserController.getAll)
-
-  // app.get('/api', async (req, res, next) => {
-  //   await models.User.create({
-  //     firstName: 'Shovha',
-  //     lastName: 'Saha',
-  //     email: 'test@test.com'
-  //   })
-  //   const users = await models.User.findAll()
-  //   res.json({ message: users })
-  // })
+  app.post('/api', UserController.insert)
+  app.put('/api/:id', UserController.update)
+  app.delete('/api/:id', UserController.delete)
+  app.get('/api/:id', UserController.getByPk)
 
   // Give nuxt middleware to express
   app.use(nuxt.render)

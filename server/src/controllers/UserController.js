@@ -1,9 +1,9 @@
 /* eslint-disable no-useless-constructor */
 const UserService = require('../services/UserService')
-const models = require('../models')
+const User = require('../models/User')
 const Controller = require('./Controller')
 
-const userService = new UserService(models.User)
+const userService = new UserService(User)
 
 class UserController extends Controller {
   constructor (service) {
