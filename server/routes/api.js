@@ -17,10 +17,10 @@ router.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.error = true
   res.locals.message = err.message
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
+  res.locals.errors = req.app.get('env') === 'development' ? err.errors : {}
   // render the error page
   res.status(err.statusCode || 500)
-  res.send()
+  res.json(res.locals)
 })
 
 module.exports = router

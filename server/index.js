@@ -41,7 +41,10 @@ async function start () {
     path: path.join(__dirname, 'log')
   })
   // setup the logger
-  app.use(morgan('combined', { stream: accessLogStream }))
+  app.use(morgan('combined', {
+    skip (req, res) { return res.statusCode < 400 },
+    stream: accessLogStream
+  }))
 
   app.use('/api', apiRoutes)
 
