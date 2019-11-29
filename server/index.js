@@ -13,7 +13,7 @@ const config = require('../nuxt.config.js')
 config.dev = process.env.NODE_ENV !== 'production'
 
 const models = require('./src/models')
-const UserController = require('./src/controllers/UserController')
+const apiRoutes = require('./routes/api')
 
 async function start () {
   // Init Nuxt.js
@@ -43,11 +43,7 @@ async function start () {
   // setup the logger
   app.use(morgan('combined', { stream: accessLogStream }))
 
-  app.get('/api', UserController.getAll)
-  app.post('/api', UserController.insert)
-  app.put('/api/:id', UserController.update)
-  app.delete('/api/:id', UserController.delete)
-  app.get('/api/:id', UserController.getByPk)
+  app.use('/api', apiRoutes)
 
   // Give nuxt middleware to express
   app.use(nuxt.render)
