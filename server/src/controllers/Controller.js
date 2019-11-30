@@ -1,21 +1,16 @@
 class Controller {
   constructor (service) {
     this.service = service
-    this.getAll = this.getAll.bind(this)
-    this.getByPk = this.getByPk.bind(this)
-    this.insert = this.insert.bind(this)
-    this.update = this.update.bind(this)
-    this.delete = this.delete.bind(this)
   }
 
   async getAll (req, res) {
     return res.status(200).send(await this.service.getAll(req.query))
   }
 
-  async getByPk (req, res) {
+  async getById (req, res) {
     const { id } = req.params
 
-    const response = await this.service.getByPk(id)
+    const response = await this.service.getById(id)
     return res.status(response.statusCode).send(response)
   }
 

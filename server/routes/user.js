@@ -3,10 +3,10 @@ const router = express.Router()
 
 const UserController = require('../src/controllers/UserController')
 
-router.get('/', UserController.getAll)
-router.post('/', UserController.insert)
-router.put('/:id', UserController.update)
-router.delete('/:id', UserController.delete)
-router.get('/:id', UserController.getByPk)
+router.get('/', (...args) => UserController.getAll(...args))
+router.post('/', (...args) => UserController.insert(...args))
+router.put('/:id', (...args) => UserController.update(...args))
+router.delete('/:id', (...args) => UserController.delete(...args))
+router.get('/:id', (...args) => UserController.getById(...args))
 
 module.exports = router

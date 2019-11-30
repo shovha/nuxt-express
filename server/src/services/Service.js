@@ -2,11 +2,6 @@
 class Service {
   constructor (model) {
     this.model = model
-    this.getAll = this.getAll.bind(this)
-    this.insert = this.insert.bind(this)
-    this.update = this.update.bind(this)
-    this.delete = this.delete.bind(this)
-    this.getByPk = this.getByPk.bind(this)
   }
 
   async getAll (query) {
@@ -38,7 +33,7 @@ class Service {
     }
   }
 
-  async getByPk (id) {
+  async getById (id) {
     try {
       const item = await this.model.findByPk(id)
 
