@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const path = require('path')
 const express = require('express')
 const consola = require('consola')
@@ -30,6 +32,7 @@ async function start () {
   }
 
   // parse application/json
+  app.use(bodyParser.urlencoded({ extended: true }))
   app.use(bodyParser.json())
 
   // parse cookies
